@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-import locale
 
 API_URL = 'https://api-rest-ia.onrender.com/predict/'
 
@@ -12,6 +11,9 @@ def make_prediction(data):
     else:
         print("Error en la solicitud:", response.text)
         return None
+
+def format_currency(value):
+    return "${:,.2f}".format(value)
 
 def main():
     st.title('Modelo de Predicción de Precio de Vivienda')
@@ -81,8 +83,7 @@ def main():
         prediction = make_prediction(input_data)
 
         if prediction is not None:
-            locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')  
-            formatted_currency = locale.currency(prediction, grouping=True)
+            formatted_currency = format_currency(prediction)
             st.write('El precio predicho es:', formatted_currency)
 
 if __name__ == '__main__':
